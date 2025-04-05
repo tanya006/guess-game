@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🎯 Guess the Number</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #e0c3fc, #8ec5fc);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      color: #333;
+    }
+    h2 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      color: #4b0082;
+      animation: fadeInDown 1s ease-out;
+    }
+    form {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      animation: fadeIn 1.2s ease-in;
+    }
+    input[type="number"] {
+      padding: 10px;
+      font-size: 16px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      margin-right: 10px;
+      width: 80px;
+      transition: 0.3s;
+    }
+    input[type="number"]:focus {
+      border-color: #7b2ff7;
+      outline: none;
+    }
+    input[type="submit"], button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #7b2ff7;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+    }
+    input[type="submit"]:hover, button:hover {
+      background-color: #5e17eb;
+    }
+    #result {
+      margin-top: 25px;
+      font-size: 22px;
+      font-weight: bold;
+      animation: bounceIn 0.8s ease-in-out;
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes bounceIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      60% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <h2>🎯 Guess the Number (1–100)</h2>
+  <form onsubmit="handleGuess(); return false;">
+    <input type="number" id="guess" min="1" max="100" required>
+    <input type="submit" value="Guess!">
+    <div id="result"></div>
+    <br>
+    <button type="button" onclick="resetGame()">🔄 Play Again</button>
+  </form>
+  <audio id="winSound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
+
+  <script>
+    let randomNumber = Math.floor(Math.random() * 100) + 1;
+
+    function handleGuess() {
+      const guess = parseInt(document.getElementById('guess').value);
+      const result = document.getElementById('result');
+
+      if (guess === randomNumber) {
+        result.textContent = "🎉 Correct! You guessed it!";
+        result.style.color = "green";
+        document.getElementById("winSound").play();
+        confetti();
+      } else if (guess < randomNumber) {
+        result.textContent = "⬆️ Too low! Try again.";
+        result.style.color = "#ff8c00";
+      } else {
+        result.textContent = "⬇️ Too high! Try again.";
+        result.style.color = "#ff8c00";
+      }
+
+      result.style.animation = 'none';
+      result.offsetHeight;
+      result.style.animation = null;
+    }
+
+    function resetGame() {
+      randomNumber = Math.floor(Math.random() * 100) + 1;
+      document.getElementById('guess').value = '';
+      document.getElementById('result').textContent = '';
+    }
+  </script>
+</body>
+</html>
